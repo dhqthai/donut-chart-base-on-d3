@@ -6,8 +6,8 @@
     <title>psd3 - Sunburst Chart</title>
     <!-- <script type="text/javascript" src="./d3.js"></script> -->
     <script type="text/javascript" src="./d3v4.js"></script>
-    <!-- <script type="text/javascript" src="./donut.js"></script> -->
-    <script type="text/javascript" src="./library2.js"></script>
+    <script type="text/javascript" src="./donut.js"></script>
+    <!-- <script type="text/javascript" src="./library2.js"></script> -->
     <!-- <script type="text/javascript" src="./psd3.js"></script> -->
     <link rel="stylesheet" type="text/css" href="./psd3.css" />
 </head>
@@ -78,7 +78,7 @@
             tooltip: function(d) {
                 return "<p>There are " + d.name + ".</p>";
             },
-            transition: "linear",
+            // transition: "linear",
             transitionDuration: 300,
             donutRadius: 30,
             familyFill: true
@@ -147,8 +147,8 @@
             donutRadius: 30
         };
 
-        // var samplePie = new psd3.Pie(config);
-        var samplePie2 = new psd3.Pie(config2);
+        var samplePie = new psd3.Pie(config);
+        // var samplePie2 = new psd3.Pie(config2);
     </script>
 
 </body>

@@ -21,13 +21,13 @@ psd3.Graph = function(config) {
             }
 
         },
-        transition: "linear",
+        transition: d3.easeLinear,
         transitionDuration: 1000,
         donutRadius: 0,
         gradient: false,
-        colors: d3.scale.category20(),
+        colors: d3.scaleOrdinal(d3.schemeCategory20),
         labelColor: "black",
-        drilldownTransition: "linear",
+        drilldownTransition: d3.easeLinear,
         drilldownTransitionDuration: 0,
         stroke: "white",
         strokeWidth: 2,
@@ -176,7 +176,7 @@ psd3.Pie.prototype.draw = function(svg, totalRadius, dataset, originalDataset, o
         return _this.config.label(d);
     };
 
-    var pie = d3.layout.pie();
+    var pie = d3.pie();
     pie.sort(null);
 
     pie.value(function(d) {
@@ -190,7 +190,7 @@ psd3.Pie.prototype.draw = function(svg, totalRadius, dataset, originalDataset, o
         _this.reDrawPie(d, originalDataset);
     };
 
-    var arc = d3.svg.arc()
+    var arc = d3.arc()
         .innerRadius(innerRadius)
         .outerRadius(outerRadius);
 
@@ -311,7 +311,7 @@ psd3.Pie.prototype.reDrawPie = function(d, ds) {
         .duration(_this.config.drilldownTransitionDuration)
         .style("height", 0)
         .remove()
-        .each("end", function() {
+        .on("end", function() {
             if (d.length == 1) {
                 tmp = _this.zoomStack.pop();
             } else {
