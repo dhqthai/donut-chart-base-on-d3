@@ -95,19 +95,33 @@ psd3.Pie.prototype.setHeading = function() {
 };
 
 psd3.Pie.prototype.mouseover = function(d) {
+    // d3.select("#" + _this.tooltipId)
+    //     .style("left", (d3.event.clientX + window.scrollX) + "px")
+    //     .style("top", (d3.event.clientY + window.scrollY) + "px")
+    //     .select("#value")
+    //     .html(_this.config.tooltip(d.data, _this.config.label));
+    // d3.select("#" + _this.tooltipId).classed("psd3Hidden", false);
+    // d3.select(d.path)
+    //     .style("fill", _this.config.highlightColor);
+    var svg = d3.select("#" + _this.config.containerId + "_circle");
+    svg.transition()
+        .attr("r", _this.config.donutRadius * 0.95);
+
     d3.select("#" + _this.tooltipId)
-        .style("left", (d3.event.clientX + window.scrollX) + "px")
-        .style("top", (d3.event.clientY + window.scrollY) + "px")
         .select("#value")
         .html(_this.config.tooltip(d.data, _this.config.label));
+
     d3.select("#" + _this.tooltipId).classed("psd3Hidden", false);
-    d3.select(d.path)
-        .style("fill", _this.config.highlightColor);
 };
 psd3.Pie.prototype.mouseout = function(d) {
-    d3.select("#" + _this.tooltipId).classed("psd3Hidden", true);
-    d3.select(d.path)
-        .style("fill", d.fill);
+    // d3.select("#" + _this.tooltipId).classed("psd3Hidden", true);
+    // d3.select(d.path)
+    //     .style("fill", d.fill);
+    d3.select("#" + _this.config.containerId + "_circle")
+        .transition()
+        .duration(500)
+        .ease(d3.easeBounce)
+        .attr("r", _this.config.donutRadius * 0.9);
 };
 
 psd3.Pie.prototype.drawPie = function(dataset) {
@@ -121,14 +135,17 @@ psd3.Pie.prototype.drawPie = function(dataset) {
         .attr("id", _this.config.containerId + "_svg")
         .attr("width", _this.config.width)
         .attr("height", _this.config.height);
+
     _this.tooltipId = _this.config.containerId + "_tooltip";
     var tooltipDiv = d3.select("#" + _this.config.containerId).append("div")
         .attr("id", _this.tooltipId)
-        .attr("class", "psd3Hidden psd3Tooltip");
+        .style("width", _this.config.donutRadius * 1.25 + "px")
+        .style("height", _this.config.donutRadius + "px")
+        .attr("class", "psd3Hidden psd3Tooltip circle-center");
     tooltipDiv.append("p")
         .append("span")
         .attr("id", "value")
-        .text("100%");
+        .text("");
 
     // to contain pie circle
     var radius;
@@ -143,6 +160,14 @@ psd3.Pie.prototype.drawPie = function(dataset) {
     var outerRadius = innerRadius + (radius - innerRadius) / maxDepth;
     var originalOuterRadius = outerRadius;
     var radiusDelta = outerRadius - innerRadius;
+
+    svg.append("svg:circle")
+        .attr("id", _this.config.containerId + "_circle")
+        .attr("r", _this.config.donutRadius * 0.9)
+        .style("fill", "#E7E7E7")
+        .attr("transform",
+            "translate(" + (radius) + "," + (radius) + ")");
+
     _this.draw(svg, radius, dataset, dataset, dataset.length, innerRadius, outerRadius, radiusDelta, 0, 360 * 22 / 7 / 180, [0, 0]);
 };
 
